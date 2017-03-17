@@ -1,5 +1,4 @@
 from PyQt4 import QtCore, QtGui, QtWebKit, QtNetwork
-import qdarkstyle
 from obspy import read_inventory
 import functools
 import os
@@ -72,7 +71,6 @@ if __name__ == '__main__':
     QtNetwork.QNetworkProxy.setApplicationProxy(networkProxy)
 
     app = QtGui.QApplication([])
-    app.setStyleSheet(qdarkstyle.load_stylesheet(pyside=False))
     w = MainWindow()
     w.raise_()
     app.exec_()
