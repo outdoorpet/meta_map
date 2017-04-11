@@ -2,6 +2,8 @@ from PyQt4 import QtCore, QtGui, QtWebKit, QtNetwork
 from obspy import read_inventory
 import functools
 import os
+from query_input_yes_no import query_yes_no
+import sys
 
 
 class MainWindow(QtGui.QWidget):
@@ -65,10 +67,18 @@ class MainWindow(QtGui.QWidget):
             self.view.page().mainFrame().evaluateJavaScript(js_call)
 
 if __name__ == '__main__':
-    proxy = raw_input("Proxy:")
-    port = raw_input("Proxy Port:")
-    networkProxy = QtNetwork.QNetworkProxy(QtNetwork.QNetworkProxy.HttpProxy, proxy, int(port))
-    QtNetwork.QNetworkProxy.setApplicationProxy(networkProxy)
+    proxy_queary = query_yes_no("Input Proxy Settings?")
+    print('')
+
+    if proxy_queary == 'yes':
+        proxy = raw_input("Proxy:")
+        port = raw_input("Proxy Port:")
+        try:
+            networkProxy = QtNetwork.QNetworkProxy(QtNetwork.QNetworkProxy.HttpProxy, proxy, int(port))
+            QtNetwork.QNetworkProxy.setApplicationProxy(networkProxy)
+        except ValueError:
+            print('No proxy settings supplied..')
+            sys.exit()
 
     app = QtGui.QApplication([])
     w = MainWindow()
